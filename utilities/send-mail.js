@@ -202,12 +202,12 @@ ${$(
         }
       })
       .then(function (response) {
-        if (response.errcode === 0)
+        if (response.status === 200 && response.data.errcode === 0)
           console.log("已企业微信提醒站长");
-        else console.warn("企业微信失败:", response);
+        else console.log("企业微信失败:", response.data);
       })
       .catch(function (error) {
-        console.error("企业微信失败:", error);
+        console.error("企业微信失败:", error.message);
       });
   }
 };
