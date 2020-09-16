@@ -114,66 +114,68 @@ exports.notice = (comment) => {
         "Content-type": "application/x-www-form-urlencoded",
       },
     })
-      .then(function (response) {
-        if (response.status === 200 && response.data.errmsg === "success")
-          console.log("已微信提醒站长");
-        else console.log("微信提醒失败:", response.data);
-      })
-      .catch(function (error) {
-        console.warn("微信提醒失败:", error.message);
-      });
+    .then(function (response) {
+      if (response.status === 200 && response.data.errmsg === "success")
+        console.log("已微信提醒站长");
+      else console.log("微信提醒失败:", response.data);
+    })
+    .catch(function (error) {
+      console.warn("微信提醒失败:", error.message);
+    });
   }
   // QQ提醒
   if (process.env.QMSG_KEY != null) {
     if (process.env.QQ_SHAKE != null) {
       axios
-        .get(
-          `https://qmsg.zendee.cn:443/send/${
-            process.env.QMSG_KEY
-          }.html?msg=${encodeURIComponent("[CQ:shake]")}`
-        )
-        .then(function (response) {
-          if (response.status === 200 && response.data.success === true) {
-            console.log("已发送QQ戳一戳");
-          } else {
-            console.error("发送QQ戳一戳失败:", response.data);
-          }
-        })
-        .catch(function (error) {
-          console.error("发送QQ戳一戳失败:", error.message);
-        });
+      .get(
+        `https://qmsg.zendee.cn:443/send/${
+          process.env.QMSG_KEY
+        }.html?msg=${encodeURIComponent("[CQ:shake]")}`
+      )
+      .then(function (response) {
+        if (response.status === 200 && response.data.success === true) {
+          console.log("已发送QQ戳一戳");
+        } else {
+          console.error("发送QQ戳一戳失败:", response.data);
+        }
+      })
+      .catch(function (error) {
+        console.error("发送QQ戳一戳失败:", error.message);
+      });
     }
     let qq = "";
     if (process.env.QQ != null) {
       qq = "&qq=" + process.env.QQ;
     }
-    const scContent = `您的 ${
+    const scContent = `[CQ:face,id=119]您的 ${
       process.env.SITE_NAME
     } 上有新评论了！
-${name} 发表评论：
+[CQ:face,id=183]${name} 发表评论：
+[CQ:face,id=77][CQ:face,id=77][CQ:face,id=77][CQ:face,id=77][CQ:face,id=77]
 ${$(
-  text
-    .replace(/  <img.*?src="(.*?)".*?>/g, "\n[图片]$1\n")
-    .replace(/<br>/g, "\n")
-)
-  .text()
-  .replace(/\n+/g, "\n")
-  .replace(/\n+$/g, "")}
-  ${url + "#" + comment.get("objectId")}`;
+      text
+      .replace(/  <img.*?src="(.*?)".*?>/g, "\n[图片]$1\n")
+      .replace(/<br>/g, "\n")
+    )
+    .text()
+    .replace(/\n+/g, "\n")
+    .replace(/\n+$/g, "")}
+[CQ:face,id=76][CQ:face,id=76][CQ:face,id=76][CQ:face,id=76][CQ:face,id=76]
+[CQ:face,id=169]${url + "#" + comment.get("objectId")}`;
     axios
-      .get(
-        `https://qmsg.zendee.cn:443/send/${
-          process.env.QMSG_KEY
-        }.html?msg=${encodeURIComponent(scContent)}` + qq
-      )
-      .then(function (response) {
-        if (response.status === 200 && response.data.success === true)
-          console.log("已QQ提醒站长");
-        else console.warn("QQ提醒失败:", response.data);
-      })
-      .catch(function (error) {
-        console.error("QQ提醒失败:", error.message);
-      });
+    .get(
+      `https://qmsg.zendee.cn:443/send/${
+        process.env.QMSG_KEY
+      }.html?msg=${encodeURIComponent(scContent)}` + qq
+    )
+    .then(function (response) {
+      if (response.status === 200 && response.data.success === true)
+        console.log("已QQ提醒站长");
+      else console.warn("QQ提醒失败:", response.data);
+    })
+    .catch(function (error) {
+      console.error("QQ提醒失败:", error.message);
+    });
   }
 
   // 企业微信
@@ -181,34 +183,34 @@ ${$(
     process.env.WORKWECHAT_CORPID !== null &&
     process.env.WORKWECHAT_CORPSEC !== null &&
     process.env.WORKWECHAT_AGENTID !== null
-    ) {
-      axios.get(`https://api.htm.fun/qiye_wechat`, {
-        params: {
-          corpid: process.env.WORKWECHAT_CORPID,
-          corpsecret: process.env.WORKWECHAT_CORPSEC,
-          agentid: process.env.WORKWECHAT_AGENTID,
-          text: `
+  ) {
+    axios.get(`https://api.htm.fun/qiye_wechat`, {
+      params: {
+        corpid: process.env.WORKWECHAT_CORPID,
+        corpsecret: process.env.WORKWECHAT_CORPSEC,
+        agentid: process.env.WORKWECHAT_AGENTID,
+        text: `
 您的 ${process.env.SITE_NAME} 上有新评论了！
 ${name} 发表评论：
 ${$(
-  text
-    .replace(/  <img.*?src="(.*?)".*?>/g, "\n[图片]$1\n")
-    .replace(/<br>/g, "\n")
-)
-  .text()
-  .replace(/\n+/g, "\n")
-  .replace(/\n+$/g, "")}
+          text
+          .replace(/  <img.*?src="(.*?)".*?>/g, "\n[图片]$1\n")
+          .replace(/<br>/g, "\n")
+        )
+        .text()
+        .replace(/\n+/g, "\n")
+        .replace(/\n+$/g, "")}
   ${url + "#" + comment.get("objectId")}`
-        }
-      })
-      .then(function (response) {
-        if (response.status === 200 && response.data.errcode === 0)
-          console.log("已企业微信提醒站长");
-        else console.log("企业微信失败:", response.data);
-      })
-      .catch(function (error) {
-        console.error("企业微信失败:", error.message);
-      });
+      }
+    })
+    .then(function (response) {
+      if (response.status === 200 && JSON.parse(response.data).errcode === 0)
+        console.log("已企业微信提醒站长");
+      else console.log("企业微信失败:", response.data);
+    })
+    .catch(function (error) {
+      console.error("企业微信失败:", error.message);
+    });
   }
 };
 
@@ -258,9 +260,9 @@ exports.send = (currentComment, parentComment) => {
     currentComment.save();
     console.log(
       currentComment.get("nick") +
-        " @了" +
-        parentComment.get("nick") +
-        ", 已通知."
+      " @了" +
+      parentComment.get("nick") +
+      ", 已通知."
     );
   });
 };
