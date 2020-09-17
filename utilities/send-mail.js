@@ -125,6 +125,7 @@ exports.notice = (comment) => {
   }
   // QQ提醒
   if (process.env.QMSG_KEY != null) {
+    // 戳一戳
     if (process.env.QQ_SHAKE != null) {
       axios
       .get(
@@ -143,15 +144,12 @@ exports.notice = (comment) => {
         console.error("发送QQ戳一戳失败:", error.message);
       });
     }
+    // QQ消息
     let qq = "";
     if (process.env.QQ != null) {
       qq = "&qq=" + process.env.QQ;
     }
-    const scContent = `[CQ:face,id=119]您的 ${
-      process.env.SITE_NAME
-    } 上有新评论了！
-[CQ:face,id=183]${name} 发表评论：
-[CQ:face,id=77][CQ:face,id=77][CQ:face,id=77][CQ:face,id=77][CQ:face,id=77]
+    const scContent = `您的 ${process.env.SITE_NAME} 上有新评论了！${name} 发表评论：
 ${$(
       text
       .replace(/  <img.*?src="(.*?)".*?>/g, "\n[图片]$1\n")
@@ -160,8 +158,7 @@ ${$(
     .text()
     .replace(/\n+/g, "\n")
     .replace(/\n+$/g, "")}
-[CQ:face,id=76][CQ:face,id=76][CQ:face,id=76][CQ:face,id=76][CQ:face,id=76]
-[CQ:face,id=169]${url + "#" + comment.get("objectId")}`;
+${url + "#" + comment.get("objectId")}`;
     axios
     .get(
       `https://qmsg.zendee.cn:443/send/${
