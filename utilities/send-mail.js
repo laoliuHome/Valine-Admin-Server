@@ -162,11 +162,13 @@ ${url + "#" + comment.get("objectId")}`;
     process.env.WORKWECHAT_CORPSEC !== null &&
     process.env.WORKWECHAT_AGENTID !== null
   ) {
-    axios.get(`https://api.htm.fun/qiye_wechat`, {
+    axios.post(`https://api.htm.fun/api/Wechat/text_card/`, {
       params: {
         corpid: process.env.WORKWECHAT_CORPID,
         corpsecret: process.env.WORKWECHAT_CORPSEC,
         agentid: process.env.WORKWECHAT_AGENTID,
+        title: `您的 ${process.env.SITE_NAME} 上有新评论了！`,
+        url: `${url + "#" + comment.get("objectId")}`,
         text: `
 您的 ${process.env.SITE_NAME} 上有新评论了！
 ${name} 发表评论：
