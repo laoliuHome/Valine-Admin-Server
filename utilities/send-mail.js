@@ -178,7 +178,7 @@ ${$(
         )
         .text()
         .replace(/\n+/g, "\n")
-        .replace(/\n+$/g, "")}
+        .replace(/\n+$/g, "")}`
       }
     })
     .then(function (response) {
