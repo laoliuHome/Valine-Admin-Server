@@ -117,10 +117,10 @@ exports.notice = (comment) => {
     .then(function (response) {
       if (response.status === 200 && response.data.errmsg === "success")
         console.log("已微信提醒站长");
-      else console.log("微信提醒失败:", response.data);
+      else console.log("微信提醒失败(status):", response.data);
     })
     .catch(function (error) {
-      console.warn("微信提醒失败:", error.message);
+      console.warn("微信提醒失败(error):", error.message);
     });
   }
   // QQ提醒
@@ -149,10 +149,10 @@ ${url + "#" + comment.get("objectId")}`;
     .then(function (response) {
       if (response.status === 200 && response.data.success === true)
         console.log("已QQ提醒站长");
-      else console.warn("QQ提醒失败:", response.data);
+      else console.warn("QQ提醒失败(status):", response.data);
     })
     .catch(function (error) {
-      console.error("QQ提醒失败:", error.message);
+      console.error("QQ提醒失败(error):", error.message);
     });
   }
 
@@ -162,14 +162,14 @@ ${url + "#" + comment.get("objectId")}`;
     process.env.WORKWECHAT_CORPSEC !== null &&
     process.env.WORKWECHAT_AGENTID !== null
   ) {
-    axios.post(`https://api.htm.fun/api/Wechat/text_card/`, {
+    axios.post(`https://api.htm.fun/api/Wechat/text/`, {
       params: {
         corpid: process.env.WORKWECHAT_CORPID,
         corpsecret: process.env.WORKWECHAT_CORPSEC,
         agentid: process.env.WORKWECHAT_AGENTID,
         title: `您的 ${process.env.SITE_NAME} 上有新评论了！`,
         url: `${url + "#" + comment.get("objectId")}`,
-        text: `
+        description: `
 您的 ${process.env.SITE_NAME} 上有新评论了！
 ${name} 发表评论：
 ${$(
@@ -186,10 +186,10 @@ ${$(
     .then(function (response) {
       if (response.status === 200 && JSON.parse(response.data).errcode === 0)
         console.log("已企业微信提醒站长");
-      else console.log("企业微信失败:", response.data);
+      else console.log("企业微信失败(status):", response.data);
     })
     .catch(function (error) {
-      console.error("企业微信失败:", error.message);
+      console.error("企业微信失败(error):", error.message);
     });
   }
 };
