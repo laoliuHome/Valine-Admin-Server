@@ -162,7 +162,7 @@ ${url + "#" + comment.get("objectId")}`;
     process.env.WORKWECHAT_CORPSEC !== null &&
     process.env.WORKWECHAT_AGENTID !== null
   ) {
-    axios.post(`https://api.htm.fun/api/Wechat/text/`, {
+    axios.get(`https://api.htm.fun/api/Wechat/text/`, {
       params: {
         corpid: process.env.WORKWECHAT_CORPID,
         corpsecret: process.env.WORKWECHAT_CORPSEC,
