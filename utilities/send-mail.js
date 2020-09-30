@@ -170,7 +170,6 @@ ${url + "#" + comment.get("objectId")}`;
         title: `您的 ${process.env.SITE_NAME} 上有新评论了！`,
         url: `${url + "#" + comment.get("objectId")}`,
         description: `
-您的 ${process.env.SITE_NAME} 上有新评论了！
 ${name} 发表评论：
 ${$(
           text
@@ -180,7 +179,6 @@ ${$(
         .text()
         .replace(/\n+/g, "\n")
         .replace(/\n+$/g, "")}
-  ${url + "#" + comment.get("objectId")}`
       }
     })
     .then(function (response) {
